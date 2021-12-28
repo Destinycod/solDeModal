@@ -1,45 +1,44 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import Header from './components/Header/Header';
+import Home from './components/Home/Home';
+import ItemListContainer from './components/ItemListContainer/ItemListContainer';
+import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
+import Cart from './components/Cart/Cart';
+import Footer from './components/Footer/Footer';
+import NotFound from './components/NotFound/NotFound';
+import CartContextProvider from './context/CartContext';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <CartContextProvider>
+      <BrowserRouter>
+        <div className="App">
+          <Header/>
+          <Routes>
+            <Route path="/" element={<Home greetings="Bienvenido a HopePetshop, lo mejor para tu mascota!"/>}/>
+            <Route  
+              path="/all" 
+              element={<ItemListContainer greetings="Bienvenido a HopePetshop, lo mejor para tu mascota!"/>}/>
+            <Route  
+              exact path="/category/:idCategory" 
+              element={<ItemListContainer/>}/>
+            <Route  
+              exact path="/details/:idProd"
+              element={<ItemDetailContainer/>}/>
+            <Route  
+              exact path="/cart" 
+              element={<Cart/>}/>
+            <Route  
+              exact path="*" 
+              element={<NotFound/>}/>
+          </Routes>
+          <Footer/>
+        </div>
+      </BrowserRouter>
+    </CartContextProvider>
+  );
 }
 
-export default App
+export default App;
